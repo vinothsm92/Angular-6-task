@@ -1,0 +1,287 @@
+<p-panel>
+    <p-header>
+      <div class="ui-helper-clearfix">
+        <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Manage User</span>       
+        <button pButton type="button" icon="pi pi-plus" label="Add User" class="ui-button-info" (click)="ShowAddUserD()"
+        style="margin-right: .25em;float: right"></button>
+      </div>
+    </p-header>
+  
+  
+  
+    <p-table #dt [columns]="cols" [value]="UserMasters" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[1,2,3]" [scrollable]="true"
+      scrollHeight="300px" sortMode="multiple">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th align="center">
+            <strong>Edit</strong>
+          </th>
+          <th align="center" *ngFor="let col of columns" [pSortableColumn]="col.field" style="text-align:center;width:auto">
+            {{col.header}}
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          </th>
+        </tr>
+  
+        <tr>
+          <th></th>
+          <th>
+            <input type="text" pInputText size="50" placeholder="Search"
+             (input)="dt.filter($event.target.value, 'UserName' ,'contains')"
+              style="width:100%">
+          </th>
+          <th>
+            <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filter($event.target.value, 'Email' ,'contains')"
+              style="width:100%">
+          </th>
+          <th>
+  
+            <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filter($event.target.value, 'Mobile' ,'contains')"
+              style="width:100%">
+          </th>
+          <th>
+            <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filter($event.target.value, 'Country' ,'contains')"
+              style="width:100%">
+          </th>
+          <th>
+            <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filter($event.target.value, 'Date' ,'contains')"
+              style="width:100%">
+          </th>
+          <th>
+            <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filter($event.target.value, 'Description' ,'contains')"
+              style="width:100%">
+          </th>
+          <th>
+            <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filter($event.target.value, 'Url' ,'contains')"
+              style="width:100%">
+          </th>
+        </tr>
+      </ng-template>
+       
+      <ng-template pTemplate="body" let-rowData style="z-index:300">
+        <tr>
+          <td align="center">
+              <img  src="src/assets/images/edit_icon.png" 
+              (click)="ShowEdit(rowData)" alt="Smiley face" height="24" width="25">
+          </td>
+          <td>
+            <span [innerHtml]="rowData.UserName">
+            </span>
+          </td>
+          <td>
+  
+            <span style="display: block;width: 85px; word-wrap:break-word;" [innerHtml]="rowData.Email">
+              </span>
+          </td>
+          <td>
+            <span [innerHtml]="rowData.Mobile">
+              </span>
+          </td>
+          <td>
+            <span [innerHtml]="rowData.Country">
+              </span>
+          </td>
+          <td>
+            <span [innerHtml]="rowData.Date">
+              </span>
+          </td>
+          <td>
+              <span [innerHtml]="rowData.Description">
+              </span>  
+               
+          </td>
+          <td>
+            <span [innerHtml]="rowData.Url">
+            </span>  
+             
+        </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  
+  
+    <p-footer>
+    </p-footer>
+  
+  </p-panel>
+  
+  <p-dialog [header]="Popuptitle" [(visible)]="EditUservisible" modal="modal" width="750" [responsive]="true">
+     
+      
+    
+      
+      <form class="forms_form" name="UserForm" [formGroup]="UserForm" (ngSubmit)="onUpdateUser()">
+        
+       
+        <div class="ui-g-6">
+          <div class="forms_field">
+              <label>User Name *</label>
+              <input type="text" placeholder="User Name" [ngModel]="UserEdit"  class="form-control text-uppercase" formControlName="User" [ngClass]="{'is-invalid': UserForm.get('User').touched && UserForm.get('User').invalid }" />
+              <div class="invalid-feedback">
+                <div>User Name is required</div>
+              </div>
+            </div>
+        
+        
+            <div class="forms_field">
+              <label>Email ID</label>
+              <input type="email" placeholder="Email ID" class="form-control" [ngModel]="EmailEdit" formControlName="Email" [ngClass]="{'is-invalid': UserForm.get('Email').touched && UserForm.get('Email').invalid }"
+              />
+              <div *ngIf="UserForm.get('Email').touched && UserForm.get('Email').invalid" class="invalid-feedback">
+                <div *ngIf="UserForm.get('Email').errors.required">Email Name is required</div>
+                <!-- <div *ngIf="form.get('email').errors.email">Email must be a valid email Address</div> -->
+                <div *ngIf="UserForm.get('Email').errors.pattern">Email is not valid</div>
+              </div>
+            </div>
+            <div class="forms_field">
+              <label>Mobile</label>
+              <input type="text" pKeyFilter="int" placeholder="Mobile" [ngModel]="MobileEdit" class="form-control" formControlName="Mobile" [ngClass]="{'is-invalid': UserForm.get('Mobile').touched && UserForm.get('Mobile').invalid }"
+              />
+              <div *ngIf="UserForm.get('Mobile').touched && UserForm.get('Mobile').invalid" class="invalid-feedback">
+                <div *ngIf="UserForm.get('Mobile').errors.required">Mobile is required</div>
+                <div *ngIf="UserForm.get('Mobile').errors.minlength">Mobile must be a atleast 10 character</div>
+                <div *ngIf="UserForm.get('Mobile').errors.maxlength">Mobile must be a lessthan 13 character</div>
+              </div>
+            </div>
+            <div class="forms_field">
+
+              <label for="s_url">URL:</label>
+              <br>
+              <input style="width:100%" type="text"  class="form-control" [ngModel]="UrlEdit" formControlName="Url" [ngClass]="{'is-invalid': UserForm.get('Url').touched && UserForm.get('Url').invalid }" />
+              <div class="invalid-feedback">
+                <div>URL is required</div>
+              </div>
+            </div>
+      </div>
+      <div class="ui-g-6">
+          <div class="forms_field">
+              <label>Description *</label>
+              <textarea rows="5" cols="30" pInputTextarea  placeholder="Description" [ngModel]="DescriptionEdit" class="form-control"
+                formControlName="Description" [ngClass]="{'is-invalid': UserForm.get('Description').touched && UserForm.get('Description').invalid }">
+                    </textarea>
+              <div *ngIf="UserForm.get('Description').touched && UserForm.get('Description').invalid" class="invalid-feedback">
+                <div *ngIf="UserForm.get('Description').errors.required">Description is required</div>
+                <div *ngIf="UserForm.get('Description').errors.maxlength">Description must be a lessthan 256 character</div>
+              </div>
+            </div>
+            
+              <div class="forms_field">
+                <label>Country *</label>
+               
+                
+                <p-dropdown [options]="Countryies" appendTo="body" [ngModel]="CountryEdit"  inputId="Country"  formControlName="Country"
+                placeholder="Select a Country" optionLabel="Country" ></p-dropdown>
+                
+              </div>
+            
+            <div class="forms_field">
+              <label>Date*</label>
+              <!-- <p-calendar [(ngModel)]="date" [showTime]="true" class="form-control" formControlName="Date" [ngClass]="{'is-invalid': UserAddForm.get('Date').touched && UserAddForm.get('Date').invalid }" ></p-calendar> -->
+              <input type="datetime-local" placeholder="Date Time" class="form-control" [ngModel]="DateEdit" formControlName="Date" [ngClass]="{'is-invalid': UserForm.get('Date').touched && UserForm.get('Date').invalid }" />
+              <div class="invalid-feedback">
+                <div>Date is required</div>
+              </div>
+              
+            </div>
+      </div>
+       
+  
+       
+      <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align:right">
+          <!-- <p-button label="Update" icon="pi pi-check"  styleClass="ui-button-info"></p-button>
+  
+          <button type="button" pButton icon="pi pi-close" label="Cancel" (click)="Cancel()" class="ui-button-secondary"></button>-->
+        </div> 
+      </p-footer>
+    </form>
+  </p-dialog>
+
+<p-dialog header="Add New User" [(visible)]="AddUserVisible" modal="modal" width="750"  [responsive]="true">
+  <form class="forms_form" name="UserAddForm" [formGroup]="UserAddForm" (ngSubmit)="onAddUserSubmit()">
+    <div class="ui-g-6">
+        <div class="forms_field">
+            <label>User Name *</label>
+            <input type="text" placeholder="User Name"  class="form-control text-uppercase" formControlName="User" [ngClass]="{'is-invalid': UserAddForm.get('User').touched && UserAddForm.get('User').invalid }" />
+            <div class="invalid-feedback">
+              <div>User Name is required</div>
+            </div>
+          </div>
+      
+      
+          <div class="forms_field">
+            <label>Email ID</label>
+            <input type="email" placeholder="Email ID" class="form-control" formControlName="Email" [ngClass]="{'is-invalid': UserAddForm.get('Email').touched && UserAddForm.get('Email').invalid }"
+            />
+            <div *ngIf="UserAddForm.get('Email').touched && UserAddForm.get('Email').invalid" class="invalid-feedback">
+              <div *ngIf="UserAddForm.get('Email').errors.required">Email Name is required</div>
+              <!-- <div *ngIf="form.get('email').errors.email">Email must be a valid email Address</div> -->
+              <div *ngIf="UserAddForm.get('Email').errors.pattern">Email is not valid</div>
+            </div>
+          </div>
+          <div class="forms_field">
+            <label>Mobile</label>
+            <input type="text" pKeyFilter="int" placeholder="Mobile" class="form-control" formControlName="Mobile" [ngClass]="{'is-invalid': UserAddForm.get('Mobile').touched && UserAddForm.get('Mobile').invalid }"
+            />
+            <div *ngIf="UserAddForm.get('Mobile').touched && UserAddForm.get('Mobile').invalid" class="invalid-feedback">
+              <div *ngIf="UserAddForm.get('Mobile').errors.required">Mobile is required</div>
+              <div *ngIf="UserAddForm.get('Mobile').errors.minlength">Mobile must be a atleast 10 character</div>
+              <div *ngIf="UserAddForm.get('Mobile').errors.maxlength">Mobile must be a lessthan 13 character</div>
+            </div>
+          </div>
+          <div class="forms_field">
+
+            <label for="s_url">URL:</label>
+            <br>
+            <input style="width:100%" type="text"  class="form-control" formControlName="Url" [ngClass]="{'is-invalid': UserAddForm.get('Url').touched && UserAddForm.get('Url').invalid }" />
+            <div class="invalid-feedback">
+              <div>URL is required</div>
+            </div>
+          </div>
+    </div>
+    <div class="ui-g-6">
+        <div class="forms_field">
+            <label>Description *</label>
+            <textarea rows="5" cols="30" pInputTextarea  placeholder="Description" class="form-control"
+              formControlName="Description" [ngClass]="{'is-invalid': UserAddForm.get('Description').touched && UserAddForm.get('Description').invalid }">
+                  </textarea>
+            <div *ngIf="UserAddForm.get('Description').touched && UserAddForm.get('Description').invalid" class="invalid-feedback">
+              <div *ngIf="UserAddForm.get('Description').errors.required">Description is required</div>
+              <div *ngIf="UserAddForm.get('Description').errors.maxlength">Description must be a lessthan 256 character</div>
+            </div>
+          </div>
+          <div class="forms_field">
+            <label>Country*</label>
+          <!-- <select formControlName="Country" style="width:100%" [ngClass]="{'is-invalid': UserAddForm.get('Country').touched && UserAddForm.get('Country').invalid }" >
+              <option *ngFor="let Country of Countryies">{{Country}}</option>
+            </select>  -->
+            <p-dropdown [options]="Countryies" appendTo="body" inputId="Country"  formControlName="Country"
+            placeholder="Select a Country" optionLabel="Country" ></p-dropdown>
+            <div class="invalid-feedback">
+              <div>Country is required</div>
+            </div>
+          </div>
+          <div class="forms_field">
+            <label>Date*</label>
+            <!-- <p-calendar [(ngModel)]="date" [showTime]="true" class="form-control" formControlName="Date" [ngClass]="{'is-invalid': UserAddForm.get('Date').touched && UserAddForm.get('Date').invalid }" ></p-calendar> -->
+            <input type="datetime-local" placeholder="Date Time" class="form-control" formControlName="Date" [ngClass]="{'is-invalid': UserAddForm.get('Date').touched && UserAddForm.get('Date').invalid }" />
+            <div class="invalid-feedback">
+              <div>Date is required</div>
+            </div>
+            
+          </div>
+    </div>
+   
+  
+    
+    
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align:right">
+        <p-button label="Save" icon="pi pi-check" styleClass="ui-button-info"></p-button>
+        <button type="button" pButton icon="pi pi-close" label="Cancel" (click)="Cancel()" class="ui-button-secondary"></button>
+        
+      </div>
+    </p-footer>
+  </form>
+</p-dialog>
+
+  <p-toast [style]="{marginTop: '80px'}"></p-toast>

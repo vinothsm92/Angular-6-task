@@ -1,0 +1,11 @@
+.Error-Color {
+    background-color: #fd3d3d52 !important;
+    color: #ffffff !important;
+}
+.main-content-inner { 
+      padding: 0 0px 0px !important;
+    /* height: 100px; */
+}
+.ui-table-scrollable-view{
+    height: 450px;
+}
